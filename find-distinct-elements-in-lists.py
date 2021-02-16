@@ -11,24 +11,23 @@ Design:
 
 input = [1,2,2,5]
 
-#Code: Solution 1 (using using design #2)
-def PrintUnique1(a):
-    a.sort()  #sorting the array
-    seen = a[0] #first value in list
-    count = 0
-    for i in range(len(a)):
-        if (a[i] == seen): 
-            count += 1    
-        else: #new
-            if (count == 1):
-                #unique
-                print(seen)
-            seen = a[i]
-            count = 1  #first time
-        if (len(a)-1 == i and count == 1):   #last element in the list is unique
-            print(seen)
- 
-PrintUnique1(input) #1,5
+'''
+Questions to ask: 
+1. Is the list sorted? No
+2. Memory constraints? Yes
+'''
+#Code: Solution 2 (using using design #2)
+def PrintUnique1(input):
+    input.sort()
+    seen = None
+    for i in range(len(input)):
+        if (seen is None or seen != input[i]):
+            print(input[i])
+            seen = input[i]
+
+print("Input >>>", input)
+print("Unique values ....")
+PrintUnique1(input)
 
 
 #Code: Solution 2 (using using design #1 and red black tree)
@@ -56,3 +55,29 @@ for x in input:
 #Iterate        
 tree.foreach(PrintUnique2,0)  #0=inorder
 
+
+
+#Solution 3
+'''
+REFERENCE:
+http://www.geeksforgeeks.org/find-duplicates-in-on-time-and-constant-extra-space/
+
+LIMITATIONS:
+1. n elements with value > 0 and < n
+2. Logic needs to be modified if 0 is one of the values
+'''
+
+def Generator2List(g):
+    return [x for x in g]
+
+def RemoveDuplicates(a):
+    size = len(a)
+    for i in range(0,size):
+        #Have we seen abs(a[i])? 
+        if  a[abs(a[i])] > 0: #not seen
+                yield abs(a[i])
+                a[abs(a[i])] = -a[abs(a[i])] #seen now
+
+a=[1,2,3,1,3,6,6,3,3]
+print("input >>> ", a)
+print("unique values >>> ", Generator2List(RemoveDuplicates(a)))

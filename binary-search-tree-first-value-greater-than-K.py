@@ -1,9 +1,13 @@
-'''
-Question: In a BST find first value greater than K or given node K find the next node
+#Question: Given BST find inorder successor of node N
 
-Observation:
-When root.data > K we have a greater value. We then need to traverse left to first the first greater value.
-Since left node can be None, we need to store the greatest value found so far before traversing left
+'''
+OBSERVATION:
+1. In inorder traversal, next node value (successor) is > N
+2. Successor is the smallest of the largest value > N 
+
+REFERENCES:
+1. https://discuss.leetcode.com/topic/25698/java-python-solution-o-h-time-and-o-1-space-iterative
+2. http://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/
 '''
 
 import sys
@@ -12,18 +16,23 @@ import BST
 
 #Create BST
 root = BST.BSTNode(4)
-input = [3,2,1,5,10,7,6,9,15]
+input = [3,2,1,5,10,7,6,9,12,15]
 for x in input:
-    BST.insertNode(root, BST.BSTNode(x))
+    BST.insert(root, BST.BSTNode(x))
 
-def FirstGreaterValue(root,K,result):
-    if(root is None):
-        return result
-    elif (root.data > K): #new result!
-        result = FirstGreaterValue(root.left,K,root.data)
-    elif (root.data <= K):
-        result = FirstGreaterValue(root.right,K,result)
+
+def nextNode(node,target):
+    result = None
+    while node:
+        #if value > target, can be successor!
+        if node.data > target:
+            result = node.data
+            #IMPORTANT: find smallest of the largest!
+            node = node.left
+        else:
+            #go right!
+            node = node.right
     return result
-    
-for K  in range(0,len(input)-1):
-    print("First value greater than %d = %d" % (input[K],FirstGreaterValue(root,input[K],"None")))
+
+target = 11
+print("First value greater than ", target , " = ", nextNode(root,target))

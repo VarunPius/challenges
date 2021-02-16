@@ -1,25 +1,31 @@
 #Question: Reverse all words in a sentance
-#Complexity: O(n) where n is the lenght of the sentance
 
-#Answer
+#Helper function that reverses all the characters between a start and end index (inclusive)
+def reverse(a,start,end):
+	while start < end:
+		a[start], a[end] = a[end], a[start]
+		start += 1
+		end -= 1
 
-#Source: http://stackoverflow.com/questions/18686860/reverse-a-string-in-python-without-using-reversed-or-1
-def reverse(text):
-    if len(text) <= 1:
-        return text
-    return reverse(text[1:]) + text[0]
+#Time complexity: O(n)
+#Space Complexity: O(1)
+def reverseSentance(a):
+	#step 1: reverse the entire string
+	reverse(a,0,len(a)-1)
 
-sentances = ['Alice likes Bob']
+	#step 2: reverse each word in the string
+	start_index = 0
+	end_index = 0
+	for i in range(0,len(a)):
+		if a[i] == " ":  #nd of word!
+			end_index = i-1 #leave the space
+			reverse(a,start_index,end_index)
+			start_index = i+1 #next character!
+	#IMPORTANT: Handle last word!
+	reverse(a,start_index,len(a)-1)
 
 
-#Solution 1: Using list comprehension    
-for n in sentances:
-    print (n,"===>",end=" ")
-    print (''.join([x for r in reverse(n).split(" ") for x in reverse(r) + " " ]))
-    
-#Solution 2: Function call (more space efficient than solution 1)   
-for n in sentances: 
-    print (n, "===>",end=" ")
-    for x in reverse(n).split(" "):
-        print(reverse(x),end=" ") 
-print(" ")
+a= ['A','l','i','c','e'," ",'l','i','k','e','s'," ",'B','o','b']
+print(a)
+reverseSentance(a)
+print(a)
